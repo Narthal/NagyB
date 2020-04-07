@@ -44,8 +44,12 @@ namespace NagyB
 			#ifdef _DEBUG
 			std::cout << "Combination : ";
 			#endif // _DEBUG
-			for (int i = 0; i < combination.size(); ++i) { std::cout << combination[i] << " "; }
-			std::cout << std::endl;
+
+
+			std::string s;
+			s.reserve(10000);
+			for (int i = 0; i < combination.size(); ++i) { s += std::to_string(combination[i]).c_str(); s += ' '; }
+			puts(s.c_str());
 		}
 
 		#ifdef _DEBUG	// NOTE : _DEBUG chack akkor letzik, ha Debug konfiguracioban buildelsz (a legvegen Release mode-ban buildelj optimalis sebessegert)

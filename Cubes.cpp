@@ -49,6 +49,7 @@ namespace NagyB
 				do 
 				{
 					std::advance(bIt, 1);
+					if (bIt == eIt) break;
 				} while ((sum + *bIt._Ptr) % n != 0);
 				combination.emplace_back(*bIt._Ptr);
 				sum += *bIt._Ptr;
