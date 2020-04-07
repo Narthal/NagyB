@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <map>
+#include <chrono>
 
 namespace NagyB
 {
@@ -24,69 +25,60 @@ namespace NagyB
 
 	void Cubes::CalculateTask()
 	{
-		//GetSetsRecursive(0, n);
-		SortCubes();
+		cubeValuesSize = cubeValues.size();
+		// Create seed from time
+		srand(time(NULL));
 
-		std::map<unsigned int, std::vector<uint32_t>> remainderClasses;
-
-		for (size_t i = 0; i < n; i++)
+		unsigned int leaveX;
+		if (a*b*c > 1000)
 		{
-			remainderClasses.emplace(i, FindWithRemainder(i));
+			leaveX = 2;
+		}
+		else
+		{
+			leaveX = 2;
 		}
 
-		// Add exact cases
-		int exactPairSize = remainderClasses[0].size();
-		int exactRemainder = (n - exactPairSize) % 4;
-
-		int exactCounter = 0;
-		for (auto& exactPairValue : remainderClasses[0])
+		success = false;
+		unsigned int maxTryNumber = 50;
+		unsigned int tryCount = 0;
+		std::pair<uint32_t, uint32_t> lastPair;
+		while (success == false)
 		{
-			if (exactCounter + exactRemainder == exactPairSize)
+			blackList.clear();
+			uint32_t sum = 0;
+			for (size_t i = 0; i < n - leaveX; i++)
 			{
-				break;
+				uint32_t newRandValue = GetRandomIndexWithBlacklist();
+
+				combination.emplace_back(cubeValues[newRandValue]);
+				blackList.emplace_back(newRandValue);
+				sum += cubeValues[newRandValue];
 			}
 
-			combination.emplace_back(exactPairValue);
+			int remainder = sum % n;
 
-			exactCounter++;
-		}
-
-		// Add pairs of pairs while combination size is not equal to n
-		unsigned int RemainderClassCounter = 1;
-		while (combination.size() != n)
-		{
-			if (RemainderClassCounter == n)
+			if (leaveX == 2)
 			{
-				break;
+				lastPair = FindLastPair(remainder);
 			}
-			int plusPairSize = remainderClasses[RemainderClassCounter].size();
-			int minusPairSize = remainderClasses[n - RemainderClassCounter].size();
-
-			// Least common multiple (lcm)
-			int lcm = plusPairSize < minusPairSize ? plusPairSize : minusPairSize;
-
-			unsigned int amountNeeded = n - combination.size();
-			int amountToAdd = amountNeeded < lcm ? amountNeeded : lcm;
-
-			for (size_t i = 0; i < amountToAdd; i++)
+			else if (leaveX == 1)
 			{
-				combination.emplace_back(remainderClasses[RemainderClassCounter][i]);
-				combination.emplace_back(remainderClasses[n - RemainderClassCounter][i]);
+				lastPair = FindLast(remainder);
+			}
+			else
+			{
+				// nono
 			}
 
-			RemainderClassCounter++;
-		}
-		
-		// Set to true if enough combinations found
-		if (combination.size() == 60)
-		{
-			validCombinationFound = true;
-		}
 
-		#ifdef _DEBUG
+			tryCount++;
+			if (tryCount == maxTryNumber) break;
+		}
+		combination.emplace_back(lastPair.first);
+		if (leaveX == 2) combination.emplace_back(lastPair.second);
+
 		CheckCombination();
-		#endif // _DEBUG
-
 
 		return;
 	}
@@ -118,12 +110,61 @@ namespace NagyB
 
 	}
 
+	uint32_t Cubes::GetRandomIndexWithBlacklist()
+	{
+		uint32_t value = rand() % cubeValuesSize;
+		if (std::find_if(blackList.begin(), blackList.end(), [=](uint32_t item) -> bool { return value == item; }) != blackList.end())
+		{
+			value = GetRandomIndexWithBlacklist();
+		}
+
+		return value;
+	}
+
 	void Cubes::SortCubes()
 	{
 		std::sort(cubeValues.begin(), cubeValues.end());
 	}
 
-	std::vector<uint32_t> Cubes::FindWithRemainder(int remainder)
+	std::pair<uint32_t, uint32_t> Cubes::FindLastPair(unsigned int remainder)
+	{
+		for (size_t i = 0; i < cubeValuesSize; i++)
+		{
+			for (size_t j = 0; j < cubeValuesSize; j++)
+			{
+
+				if (std::find_if(blackList.begin(), blackList.end(), [=](auto& item) -> bool { return item == i || item == j; }) == blackList.end())
+				{
+					if ((cubeValues[i] + cubeValues[j] + remainder) % n == 0)
+					{
+						success = true;
+						return std::pair<uint32_t, uint32_t>(cubeValues[i], cubeValues[j]);
+					}
+				}
+			}
+		}
+		success = false;
+		return std::pair<uint32_t, uint32_t>();
+	}
+
+	std::pair<uint32_t, uint32_t> Cubes::FindLast(unsigned int remainder)
+	{
+		for (size_t i = 0; i < cubeValuesSize; i++)
+		{
+			if (std::find_if(blackList.begin(), blackList.end(), [=](auto& item) -> bool { return item == i; }) == blackList.end())
+			{
+				if ((cubeValues[i] + remainder) % n == 0)
+				{
+					success = true;
+					return std::pair<uint32_t, uint32_t>(cubeValues[i], 0);
+				}
+			}
+		}
+		success = false;
+		return std::pair<uint32_t, uint32_t>();
+	}
+
+	std::vector<uint32_t> Cubes::FindAllWithRemainder(int remainder)
 	{
 		std::vector<uint32_t> values;
 
