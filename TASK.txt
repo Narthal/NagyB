@@ -29,9 +29,9 @@ Kimenet:
 
 3 5 7 9 4 5 7 0
 
-Idõkorlát/teszteset: 1 másodperc
+Idõkorlát/teszteset: 1 másodperc	// oke
 
-Memória limit: 1 GB
+Memória limit: 1 GB					// lol what
 
 Pontozás: 10 teszteset. Egy teszteset:
 helyes válasz esetén 10 pont
