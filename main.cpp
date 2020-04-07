@@ -17,6 +17,11 @@
 #endif // PROFILE_TIME
 
 
+
+
+
+
+
 void PopulateCubesWithRandomValues(NagyB::Cubes& cubes)
 {
 	// Create seed from time
@@ -43,9 +48,9 @@ int main()
 	/* ************************************************************************* */
 
 	// NOTE : itt olvasod be cin rol vagy akarhonnan a, b, c erteket
-	int a = 10;
-	int b = 12;
-	int c = 17;
+	int a = 50;
+	int b = 50;
+	int c = 5;
 
 	/* ************************************************************************* */
 	// 2 : generate cubes (handled by constructor)
@@ -77,6 +82,10 @@ int main()
 	std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 	#endif // PROFILE_TIME
 
+	#ifdef _DEBUG
+	std::cout << "Begin calulation" << std::endl;
+	#endif // _DEBUG
+
 	cubes.CalculateTask();
 
 	/* ************************************************************************* */
@@ -98,6 +107,7 @@ int main()
 
 	std::cout << "Time it took to find result = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << std::endl;
 	#endif // PROFILE_TIME
+
 
 	return 0;
 }

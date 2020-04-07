@@ -1,5 +1,8 @@
 #include "Cubes.h"
 
+#include <algorithm>
+#include <map>
+
 namespace NagyB
 {
 	Cubes::Cubes(uint32_t a, uint32_t b, uint32_t c) : a(a), b(b), c(c)
@@ -21,12 +24,74 @@ namespace NagyB
 
 	void Cubes::CalculateTask()
 	{
-		GetSets(0, n);
+		//GetSetsRecursive(0, n);
+		SortCubes();
+
+		std::map<unsigned int, std::vector<uint32_t>> remainderClasses;
+
+		for (size_t i = 0; i < n; i++)
+		{
+			remainderClasses.emplace(i, FindWithRemainder(i));
+		}
+
+		// Add exact cases
+		int exactPairSize = remainderClasses[0].size();
+		int exactRemainder = (n - exactPairSize) % 4;
+
+		int exactCounter = 0;
+		for (auto& exactPairValue : remainderClasses[0])
+		{
+			if (exactCounter + exactRemainder == exactPairSize)
+			{
+				break;
+			}
+
+			combination.emplace_back(exactPairValue);
+
+			exactCounter++;
+		}
+
+		// Add pairs of pairs while combination size is not equal to n
+		unsigned int RemainderClassCounter = 1;
+		while (combination.size() != n)
+		{
+			if (RemainderClassCounter == n)
+			{
+				break;
+			}
+			int plusPairSize = remainderClasses[RemainderClassCounter].size();
+			int minusPairSize = remainderClasses[n - RemainderClassCounter].size();
+
+			// Least common multiple (lcm)
+			int lcm = plusPairSize < minusPairSize ? plusPairSize : minusPairSize;
+
+			unsigned int amountNeeded = n - combination.size();
+			int amountToAdd = amountNeeded < lcm ? amountNeeded : lcm;
+
+			for (size_t i = 0; i < amountToAdd; i++)
+			{
+				combination.emplace_back(remainderClasses[RemainderClassCounter][i]);
+				combination.emplace_back(remainderClasses[n - RemainderClassCounter][i]);
+			}
+
+			RemainderClassCounter++;
+		}
+		
+		// Set to true if enough combinations found
+		if (combination.size() == 60)
+		{
+			validCombinationFound = true;
+		}
+
+		#ifdef _DEBUG
+		CheckCombination();
+		#endif // _DEBUG
+
 
 		return;
 	}
 
-	void Cubes::GetSets(int offset, int k)
+	void Cubes::GetSetsRecursive(int offset, int k)
 	{
 		if (k == 0)
 		{
@@ -41,7 +106,7 @@ namespace NagyB
 		for (int i = offset; i <= cubeValues.size() - k; ++i)
 		{
 			combination.push_back(cubeValues[i]);
-			GetSets(i + 1, k - 1);
+			GetSetsRecursive(i + 1, k - 1);
 
 			if (validCombinationFound)
 			{
@@ -52,6 +117,25 @@ namespace NagyB
 		}
 
 	}
+
+	void Cubes::SortCubes()
+	{
+		std::sort(cubeValues.begin(), cubeValues.end());
+	}
+
+	std::vector<uint32_t> Cubes::FindWithRemainder(int remainder)
+	{
+		std::vector<uint32_t> values;
+
+		std::for_each
+		(
+			cubeValues.begin(),
+			cubeValues.end(),
+			[&](auto& item) -> void { if (item % this->GetN() == remainder) { values.emplace_back(item); } });
+
+		return values;
+	}
+
 	void Cubes::CheckCombination()
 	{
 		uint32_t sum = 0;

@@ -35,15 +35,14 @@ namespace NagyB
 		inline const uint32_t GetA() const { return a; }
 		inline const uint32_t GetB() const { return b; }
 		inline const uint32_t GetC() const { return c; }
+		inline const uint32_t GetN() const { return n; }
 		inline const bool GetCombinationFound() const { return validCombinationFound; }
 
 	public: // Printing helper methods
 		inline void PrintCombination() const
 		{
-			static int count = 0;
-
 			#ifdef _DEBUG
-			std::cout << "Combination : " << (++count) << " : ";
+			std::cout << "Combination : ";
 			#endif // _DEBUG
 			for (int i = 0; i < combination.size(); ++i) { std::cout << combination[i] << " "; }
 			std::cout << std::endl;
@@ -63,12 +62,17 @@ namespace NagyB
 		std::vector<uint32_t> combination;
 		bool validCombinationFound = false;
 
+
 	private: // Error handler variables
 		bool success = true;
 		std::string errorMsg = "";
 
 	private: // Private helper methods
-		void GetSets(int offset, int k);
+		void GetSetsRecursive(int offset, int k);
+
+		void SortCubes();
+
+		std::vector<uint32_t> FindWithRemainder(int remainder);
 
 		void CheckCombination();
 	};
