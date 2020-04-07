@@ -1,0 +1,38 @@
+Numbers
+Jancsi és Juliska jó barátok. Egyszer Karácsonyra mindketten ugyanolyan társasjátékot kapnak. A társasjáték része egy doboz ami AxBxC kicsi kockával van feltöltve. Minden kockára egy-egy nemnegatív egész szám van írva.
+
+Sokadik nap társasozás után a játék kezdett kicsit egysíkúvá válni. Mire Juliska rájött, hogy ha a két dobozból sikerül úgy összeválogatni egy doboznyi számot, hogy azok összege osztható legyen N=A*B*C-vel, akkor sokkal több stratégiai elemet tartalmazna a játék. Jancsika kételkedik, hogy sikerülne, ezért fogadást kötnek. Ha Juliskának sikerül összeválogatni pontosan N kockát, hogy az azokra írt számok összege osztható legyen N-el, akkor Juliska nyer, ha nem, akkor Jancsika. Hogy miben fogadtak, az maradjon titok. Sajnos azonban Juliska nem ér rá, mert éppen a Graphisoft C++ ITech Challenge nevû programozási versenyen vesz részt, és Titeket kér meg, hogy segítsetek neki a feladatban.
+
+Bemenet
+
+Az elsõ sor három egész számot tartalmaz szóközzel elválasztva:
+
+A B C
+ahol A, B, C a doboz méretei (1 <= A,B,C <= 50)
+A következõ sor 2*A*B*C számot tartalmaz szóközzel elválasztva:
+
+a1 a2 … a2N
+ahol a i az i. kockán szereplõ szám (0 <= ai <= 1000000000)
+Kimenet
+
+Amennyiben létezik megoldás, a kimenetre N db egész számot várunk a bemenetben megadott halmazból, melyek összege osztható N-nel. Amennyiben nem lehetséges N db számot kiválasztani melyek összege osztható N-nel, a kimenetre 4 csillagot kell írni: "**"
+
+Példa
+
+Bemenet:
+
+2 2 2
+
+1 2 3 4 5 6 7 8 9 10 1 4 3 5 7 0
+
+Kimenet:
+
+3 5 7 9 4 5 7 0
+
+Idõkorlát/teszteset: 1 másodperc
+
+Memória limit: 1 GB
+
+Pontozás: 10 teszteset. Egy teszteset:
+helyes válasz esetén 10 pont
+helytelen válasz esetén 0 pont
