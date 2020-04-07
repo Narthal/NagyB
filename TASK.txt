@@ -12,7 +12,7 @@ ahol A, B, C a doboz méretei (1 <= A,B,C <= 50)
 A következõ sor 2*A*B*C számot tartalmaz szóközzel elválasztva:
 
 a1 a2 … a2N
-ahol a i az i. kockán szereplõ szám (0 <= ai <= 1000000000)
+ahol a i az i. kockán szereplõ szám (0 <= ai <= 1000000000)	// signed 32 bit max value = 2,147,483,647; 1,000,000,000 fits inside, value overflow is not the problem
 Kimenet
 
 Amennyiben létezik megoldás, a kimenetre N db egész számot várunk a bemenetben megadott halmazból, melyek összege osztható N-nel. Amennyiben nem lehetséges N db számot kiválasztani melyek összege osztható N-nel, a kimenetre 4 csillagot kell írni: "**"
