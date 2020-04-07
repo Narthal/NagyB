@@ -61,7 +61,6 @@ namespace NagyB
 		int cubeValuesSize;
 		std::vector<uint32_t> cubeValues;
 		std::vector<uint32_t> combination;
-		std::vector<uint32_t> blackList;
 		bool validCombinationFound = false;
 
 
@@ -70,16 +69,7 @@ namespace NagyB
 		std::string errorMsg = "";
 
 	private: // Private helper methods
-		void GetSetsRecursive(int offset, int k);
-
-		uint32_t GetRandomIndexWithBlacklist();
-
 		void SortCubes();
-
-		std::pair<uint32_t, uint32_t> FindLastPair(unsigned int remainder);
-		std::pair<uint32_t, uint32_t> FindLast(unsigned int remainder);
-
-		std::vector<uint32_t> FindAllWithRemainder(int remainder);
 
 		void CheckCombination();
 	};

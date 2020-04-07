@@ -30,7 +30,7 @@ void PopulateCubesWithRandomValues(NagyB::Cubes& cubes)
 	// Populate cubes with random values
 	for (unsigned int i = 0; i < (2 * cubes.GetA() * cubes.GetB() * cubes.GetC()); i++)
 	{
-		cubes.AddCubeValue(rand() % 1000);
+		cubes.AddCubeValue(rand() % 1000000000);
 	}
 }
 
@@ -49,8 +49,8 @@ int main()
 
 	// NOTE : itt olvasod be cin rol vagy akarhonnan a, b, c erteket
 	int a = 40;
-	int b = 50;
-	int c = 10;
+	int b = 40;
+	int c = 40;
 
 	/* ************************************************************************* */
 	// 2 : generate cubes (handled by constructor)
@@ -88,6 +88,9 @@ int main()
 
 	cubes.CalculateTask();
 
+	#ifdef PROFILE_TIME
+	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+	#endif
 	/* ************************************************************************* */
 	// 4 : print results
 	/* ************************************************************************* */
@@ -103,8 +106,6 @@ int main()
 
 	// Get end point in time and print time it took between begin & end
 	#ifdef PROFILE_TIME
-	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-
 	std::cout << "Time it took to find result = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << std::endl;
 	#endif // PROFILE_TIME
 
