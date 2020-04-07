@@ -43,9 +43,9 @@ int main()
 	/* ************************************************************************* */
 
 	// NOTE : itt olvasod be cin rol vagy akarhonnan a, b, c erteket
-	int a = 25;
-	int b = 25;
-	int c = 25;
+	int a = 10;
+	int b = 12;
+	int c = 17;
 
 	/* ************************************************************************* */
 	// 2 : generate cubes (handled by constructor)
